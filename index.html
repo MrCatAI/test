@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>智物评测局 · AI 硬件/模型/Agent 深度体验与吐槽</title>
+    <meta name="description" content="智物评测局：专注 AI 硬件、AI 模型与 AI Agent 应用的长期评测，分享真实体验、专业方法论与趋势洞察。" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="智物评测局 · AI 硬件/模型/Agent 深度体验与吐槽" />
+    <meta property="og:description" content="专注真实体验与长期跟踪的 AI 评测 IP，洞察未来 5 年自媒体与智能体发展。" />
+    <meta property="og:url" content="https://zhiwu.ai" />
+    <meta property="og:image" content="https://dummyimage.com/1200x630/0b1020/ffffff.png&text=%E6%99%BA%E7%89%A9%E8%AF%84%E6%B5%8B%E5%B1%80" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="智物评测局 · AI 深度评测" />
+    <meta name="twitter:description" content="真实体验、长期跟踪、专业方法论。" />
+    <meta name="twitter:image" content="https://dummyimage.com/1200x630/0b1020/ffffff.png&text=%E6%99%BA%E7%89%A9%E8%AF%84%E6%B5%8B%E5%B1%80" />
+
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%236C5CE7'/%3E%3Cpath d='M30 55a20 20 0 1140 0v10a10 10 0 01-10 10H40a10 10 0 01-10-10V55z' fill='%23ffffff'/%3E%3Cpath d='M43 40h14v8H43z' fill='%230B1020'/%3E%3C/svg%3E" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+      :root {
+        --bg: #0b1020;
+        --bg-elev: #11162b;
+        --text: #e5e7eb;
+        --muted: #9aa4b2;
+        --primary: #6c5ce7;
+        --primary-600: #5a49e0;
+        --accent: #22d3ee;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --card: #0f152a;
+        --border: 1px solid rgba(148, 163, 184, 0.18);
+        --radius: 14px;
+        --shadow: 0 10px 30px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.03);
+      }
+
+      [data-theme="light"] {
+        --bg: #f8fafc;
+        --bg-elev: #ffffff;
+        --text: #0b1020;
+        --muted: #475569;
+        --primary: #6c5ce7;
+        --primary-600: #5a49e0;
+        --accent: #0891b2;
+        --success: #059669;
+        --warning: #b45309;
+        --danger: #b91c1c;
+        --card: #ffffff;
+        --border: 1px solid rgba(15, 23, 42, 0.08);
+        --shadow: 0 10px 30px rgba(2,6,23,0.08), inset 0 1px 0 rgba(255,255,255,0.6);
+      }
+
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        font-family: "Inter", "Noto Sans SC", system-ui, -apple-system, Segoe UI, Roboto, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
+        background: radial-gradient(1200px 600px at 70% -10%, rgba(108,92,231,0.15), transparent 60%), var(--bg);
+        color: var(--text);
+        line-height: 1.7;
+      }
+      a { color: var(--accent); text-decoration: none; }
+      .container { max-width: 1160px; margin: 0 auto; padding: 24px; }
+      header {
+        position: sticky; top: 0; z-index: 10;
+        backdrop-filter: blur(10px);
+        background: linear-gradient(180deg, rgba(11,16,32,0.75), rgba(11,16,32,0.45));
+        border-bottom: var(--border);
+      }
+      .nav {
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 16px; padding: 10px 0;
+      }
+      .brand { display: flex; align-items: center; gap: 12px; }
+      .brand svg { width: 36px; height: 36px; }
+      .brand .title { font-weight: 800; letter-spacing: 0.2px; }
+      .nav a { color: var(--muted); margin: 0 10px; font-weight: 500; }
+      .nav a:hover { color: var(--text); }
+      .theme-toggle { border: var(--border); background: var(--bg-elev); color: var(--text); padding: 8px 12px; border-radius: 999px; cursor: pointer; }
+
+      .hero { display: grid; grid-template-columns: 1.2fr 1fr; gap: 28px; align-items: center; padding: 48px 0 18px; }
+      .hero-card {
+        background: linear-gradient(180deg, rgba(108,92,231,0.25), rgba(108,92,231,0.05));
+        border: var(--border);
+        border-radius: 22px; padding: 28px; box-shadow: var(--shadow);
+      }
+      .tag { display: inline-flex; align-items: center; gap: 8px; border: var(--border); padding: 6px 10px; border-radius: 999px; color: var(--muted); background: var(--bg-elev); }
+      .h1 { font-size: 38px; font-weight: 900; line-height: 1.15; margin: 14px 0 14px; }
+      .lead { color: var(--muted); font-size: 16px; }
+      .cta { display: flex; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+      .btn { padding: 10px 14px; border-radius: 12px; font-weight: 600; border: var(--border); background: var(--bg-elev); color: var(--text); }
+      .btn.primary { background: linear-gradient(180deg, var(--primary), var(--primary-600)); border: none; color: white; }
+
+      .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+      .card { background: var(--card); border: var(--border); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); }
+      .card h3 { margin-top: 2px; margin-bottom: 6px; }
+      .muted { color: var(--muted); }
+      .kpi { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 10px; }
+      .kpi .item { background: var(--bg-elev); border: var(--border); border-radius: 12px; padding: 12px; text-align: center; }
+      .pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; border-radius: 999px; background: rgba(34, 211, 238, 0.12); color: var(--accent); font-weight: 600; border: var(--border); }
+      .list { margin: 0; padding-left: 18px; }
+
+      .section { padding: 28px 0; }
+      .section h2 { font-size: 22px; margin: 0 0 12px; }
+      .inline-colors { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+      .swatch { width: 28px; height: 28px; border-radius: 6px; border: var(--border); }
+
+      .rating { display: inline-grid; grid-auto-flow: column; gap: 4px; align-items: center; }
+      .dot { width: 12px; height: 12px; border-radius: 50%; background: #334155; border: var(--border); }
+      .dot.active { background: var(--accent); box-shadow: 0 0 0 2px rgba(34,211,238,0.25) inset; }
+
+      .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+      footer { margin-top: 30px; padding: 22px 0 32px; color: var(--muted); border-top: var(--border); }
+
+      @media (max-width: 900px) {
+        .hero { grid-template-columns: 1fr; }
+        .grid { grid-template-columns: 1fr; }
+        .kpi { grid-template-columns: repeat(2, 1fr); }
+        .two-col { grid-template-columns: 1fr; }
+      }
+    </style>
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "智物评测局",
+        "alternateName": ["Zhiwu Review Lab", "Zhiwu AI Review"],
+        "url": "https://zhiwu.ai",
+        "sameAs": [
+          "https://www.zhihu.com/org/zhiwu-lab",
+          "https://space.bilibili.com/000000",
+          "https://www.douyin.com/user/MS4wLjABAAAA",
+          "https://x.com/zhiwu_lab"
+        ],
+        "description": "专注 AI 硬件、模型与 Agent 的长期评测与趋势洞察。",
+        "knowsAbout": ["AI 硬件", "AI 模型", "AI Agent", "RAG", "多模态", "边缘算力", "笔记与自动化", "生产力工具"],
+        "brand": {
+          "@type": "Brand",
+          "name": "智物评测局",
+          "logo": "https://dummyimage.com/200x200/6c5ce7/ffffff.png&text=Z"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <header>
+      <div class="container nav">
+        <div class="brand">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#22d3ee" />
+                <stop offset="100%" stop-color="#6c5ce7" />
+              </linearGradient>
+            </defs>
+            <circle cx="50" cy="50" r="46" fill="url(#g)" />
+            <path d="M30 55a20 20 0 1140 0v10a10 10 0 01-10 10H40a10 10 0 01-10-10V55z" fill="#0b1020" />
+            <circle cx="42" cy="52" r="5" fill="#fff" />
+            <circle cx="58" cy="52" r="5" fill="#fff" />
+          </svg>
+          <div>
+            <div class="title">智物评测局</div>
+            <div class="muted" style="font-size:12px">AI 硬件 / 模型 / Agent · 真实体验与吐槽</div>
+          </div>
+        </div>
+        <nav>
+          <a href="#about">关于</a>
+          <a href="#pillars">内容支柱</a>
+          <a href="#method">评测方法</a>
+          <a href="#platforms">平台策略</a>
+          <a href="#roadmap">五年路线</a>
+          <a href="#contact">合作</a>
+        </nav>
+        <button class="theme-toggle" id="themeToggle" aria-label="切换主题">🌓</button>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero">
+        <div class="hero-card">
+          <div class="tag">IP 画像 · ZHIWU LAB</div>
+          <h1 class="h1">做有主见的 AI 评测者：真实体验、长期跟踪、敢说缺点</h1>
+          <p class="lead">我们专注 AI 硬件、AI 模型与 AI Agent 应用的长期评测，强调真实使用场景与可复现的数据，既给结论，也给理由与边界条件。欢迎监督与反驳。</p>
+          <div class="cta">
+            <a class="btn primary" href="#method">查看评测方法</a>
+            <a class="btn" href="#pillars">内容矩阵</a>
+            <a class="btn" href="#contact">商务与合作</a>
+          </div>
+          <div class="kpi">
+            <div class="item"><div class="muted">覆盖赛道</div><div style="font-weight:800;font-size:18px">AI 硬件/模型/Agent</div></div>
+            <div class="item"><div class="muted">评测周期</div><div style="font-weight:800;font-size:18px">7/30/90 天</div></div>
+            <div class="item"><div class="muted">评分口径</div><div style="font-weight:800;font-size:18px">五维 0-5 分</div></div>
+            <div class="item"><div class="muted">内容形式</div><div style="font-weight:800;font-size:18px">短/图文/长直播</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>账号基因</h3>
+          <ul class="list">
+            <li><b>定位</b>：面向工程师与进阶用户的「务实评测」</li>
+            <li><b>人设</b>：温和但有锋芒，数据+体验并重，敢于「唱反调」</li>
+            <li><b>口吻</b>：清晰、克制、幽默，有明确的「不买建议」</li>
+            <li><b>信任</b>：公开方法与数据，强制性披露合作与利益</li>
+          </ul>
+          <div style="margin-top:10px" class="inline-colors">
+            <span class="pill">@zhiwu_lab</span>
+            <span class="pill">域名 zhiwu.ai</span>
+            <span class="pill">Slogan：只说对你有用的真话</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="section">
+        <div class="two-col">
+          <div class="card">
+            <h2>使命与价值观</h2>
+            <p>帮助用户在 AI 浪潮中做对「买与不用买」的关键决策。我们强调三件事：<b>可复现</b>、<b>场景化</b>、<b>长期主义</b>。</p>
+            <ul class="list">
+              <li>不做「开箱即测」，至少 7 天深度使用</li>
+              <li>给出「推荐与不推荐」的<b>边界条件</b></li>
+              <li>版本与固件升级后<b>回访更新</b>结论</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h2>视觉与品牌规范</h2>
+            <div class="inline-colors" style="margin-bottom:10px">
+              <div class="swatch" style="background:#6c5ce7" title="#6c5ce7"></div>
+              <div class="swatch" style="background:#22d3ee" title="#22d3ee"></div>
+              <div class="swatch" style="background:#10b981" title="#10b981"></div>
+              <div class="swatch" style="background:#f59e0b" title="#f59e0b"></div>
+              <div class="swatch" style="background:#ef4444" title="#ef4444"></div>
+            </div>
+            <p class="muted">主色 Blurple、点缀 Cyan，暗色为主、亮色可切换；字体 Inter + 思源黑体；图表优先可读性。</p>
+            <div class="tag">Logo 语义：智能体的「脑袋」 + 评测的「记录仓」</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="pillars" class="section">
+        <h2>内容支柱与栏目矩阵</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>① 硬件体验</h3>
+            <p class="muted">AIPC、推理盒子、便携追踪器、智能笔记本、录音翻译、AR/AI 眼镜等。</p>
+            <ul class="list">
+              <li>开箱 48 小时后首次反馈</li>
+              <li>7/30/90 天长期跟进</li>
+              <li>温度/噪音/续航/稳定性量化</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>② 模型测评</h3>
+            <p class="muted">通用/多模态/语音/代码/检索模型；国产与开源同台对比。</p>
+            <ul class="list">
+              <li>任务集：写作、代码、表格、检索、图片、音频</li>
+              <li>指标：正确性、相关性、效率、成本、可控性</li>
+              <li>提示词/系统提示公开，结果可复现</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>③ Agent 实战</h3>
+            <p class="muted">工作流、自动化、RAG、工具调用、多智能体协作。</p>
+            <ul class="list">
+              <li>真实业务场景复盘</li>
+              <li>吞吐/时延/成本曲线</li>
+              <li>失败案例与坑位清单</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="method" class="section">
+        <h2>评测方法与评分标准</h2>
+        <div class="two-col">
+          <div class="card">
+            <h3>方法论</h3>
+            <ol class="list">
+              <li>定义目标用户与核心场景（含「不适用人群」）</li>
+              <li>公开测试集/提示词/硬件环境与版本号</li>
+              <li>关键指标：准确性、稳定性、效率、成本、可控性</li>
+              <li>对照组：同价位/同类产品横评</li>
+              <li>长期跟踪：更新后回测并注明变更</li>
+            </ol>
+          </div>
+          <div class="card">
+            <h3>五维评分（0–5）</h3>
+            <div style="display:grid;gap:10px">
+              <div>
+                <b>体验成熟度</b>
+                <div class="rating" aria-label="体验成熟度评分">
+                  <span class="dot active"></span><span class="dot active"></span><span class="dot active"></span><span class="dot"></span><span class="dot"></span>
+                </div>
+              </div>
+              <div>
+                <b>性能/准确性</b>
+                <div class="rating"><span class="dot active"></span><span class="dot active"></span><span class="dot active"></span><span class="dot active"></span><span class="dot"></span></div>
+              </div>
+              <div>
+                <b>稳定性</b>
+                <div class="rating"><span class="dot active"></span><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+              </div>
+              <div>
+                <b>效率/成本比</b>
+                <div class="rating"><span class="dot active"></span><span class="dot active"></span><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
+              </div>
+              <div>
+                <b>生态/可扩展</b>
+                <div class="rating"><span class="dot active"></span><span class="dot active"></span><span class="dot active"></span><span class="dot active"></span><span class="dot active"></span></div>
+              </div>
+            </div>
+            <p class="muted" style="margin-top:8px">评分为样例展示，实际随产品而变；每个分数必须附带证据与边界。</p>
+          </div>
+        </div>
+
+        <div class="grid" style="margin-top:18px">
+          <div class="card">
+            <h3>吐槽清单（常见缺陷）</h3>
+            <ul class="list">
+              <li>宣传与实际落差（性能/续航/功能阉割）</li>
+              <li>关键场景卡顿或崩溃，热失效与降频</li>
+              <li>数据/隐私不透明，无法导出或锁定生态</li>
+              <li>售后与更新断供，问题长期未修复</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>样例评测卡片</h3>
+            <div class="two-col">
+              <div>
+                <div class="tag">产品：X 模型 v2.1</div>
+                <p class="muted">场景：中英写作 + 表格生成；预算：￥200/月</p>
+                <ul class="list">
+                  <li>优点：指令遵循强，表格结构可靠</li>
+                  <li>缺点：长文引用易幻觉，插件生态薄弱</li>
+                </ul>
+              </div>
+              <div>
+                <div><b>结论：</b>推荐给内容运营，<b>不推荐</b>严肃学术</div>
+                <div class="muted">最佳替代：Y（更稳），Z（更便宜）</div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>公开承诺</h3>
+            <ul class="list">
+              <li>接受赞助但<b>不卖结论</b>，商业合作强制披露</li>
+              <li>所有评分可追溯到原始记录与测试材料</li>
+              <li>错了就改，重要失误单独发更正</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="platforms" class="section">
+        <h2>平台策略与运营节奏（2025 → 2030）</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>分发矩阵</h3>
+            <ul class="list">
+              <li><b>抖音/视频号</b>：60–90s 信息密度短视频，强 Hook 与清晰结论</li>
+              <li><b>B 站/YouTube</b>：8–15min 深度讲解，方法与数据可复现</li>
+              <li><b>小红书/微博</b>：图文要点、选购清单与避坑卡</li>
+              <li><b>公众号/知乎</b>：体系化长文、横评与年度榜单</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>内容节奏</h3>
+            <ul class="list">
+              <li>每周：3 条短视频 + 2 篇图文</li>
+              <li>每月：1 期深度横评 + 直播答疑</li>
+              <li>每季：1 份行业观察/黑马榜/避坑榜</li>
+              <li>每年：Top 10 榜单与趋势白皮书</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>增长与转化</h3>
+            <ul class="list">
+              <li>私域：Newsletter + 社群（案例复盘/工具包）</li>
+              <li>变现：赞助、联盟佣金、课程、咨询与企业内训</li>
+              <li>指标：保存率、复看率、评论深度、邮件打开率</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="two-col">
+          <div class="card">
+            <h2>AI 使用与披露政策</h2>
+            <ul class="list">
+              <li>允许在脚本、字幕、封面草图中使用 AI</li>
+              <li>评测内容与结论需由人类复核并最终负责</li>
+              <li>涉及生成内容时在文末<b>主动披露</b></li>
+              <li>不上传敏感数据，默认脱敏与匿名化</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h2>SEO 与可发现性</h2>
+            <ul class="list">
+              <li>结构化数据（LD+JSON）与 OG 卡片</li>
+              <li>语义标题、跳转目录、可复制的测试集链接</li>
+              <li>聚合页：型号/价格/场景三维导航</li>
+              <li>英文镜像，覆盖海外搜索与视频分发</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="roadmap" class="section">
+        <h2>五年路线图（重点里程碑）</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>2025：体系搭建</h3>
+            <ul class="list">
+              <li>发布评测方法 1.0 与评分模板</li>
+              <li>完成 20+ 单品评测与 3 次横评</li>
+              <li>建立公开原始记录仓（提示词/脚本/原图）</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>2026–2027：工具与社区</h3>
+            <ul class="list">
+              <li>上线「选型助手」Agent（私域/网页）</li>
+              <li>开放评测表单与用户贡献样本</li>
+              <li>建立开发者与品牌方技术社群</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>2028–2030：标准与影响力</h3>
+            <ul class="list">
+              <li>推动行业评测标准化接口与开放测试集</li>
+              <li>发布年度《AI 消费与生产力白皮书》</li>
+              <li>多语言矩阵，进入海外技术社区</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>可复制的评测大纲（模板）</h2>
+        <div class="card">
+          <ol class="list">
+            <li>使用人群与场景假设（含不适用边界）</li>
+            <li>测试环境与版本信息（可复制粘贴块）</li>
+            <li>任务与提示词清单（Repo 链接）</li>
+            <li>核心指标图表 + 竞品对照</li>
+            <li>优缺点清单（按人群拆分）</li>
+            <li>结论与购买建议（含替代与等待建议）</li>
+            <li>已知问题与更新跟踪（Changelog）</li>
+          </ol>
+          <pre class="mono" style="white-space:pre-wrap;background:var(--bg-elev);border:var(--border);padding:12px;border-radius:10px">测试环境
+Model: X-7B Instruct (v2.1) | GPU: 4060 Laptop | RAM: 32GB
+OS: Windows 11 24H2 | 网络: 500Mbps
+Prompt 集: https://example.com/zhiwu/prompts
+脚本仓库: https://example.com/zhiwu/scripts</pre>
+        </div>
+      </section>
+
+      <section id="contact" class="section">
+        <div class="two-col">
+          <div class="card">
+            <h2>商务合作与投递</h2>
+            <p>欢迎评测投递、共创横评、长线赞助与活动合作。为避免偏见，我们坚持「样机可评不可退」「合作必披露」。</p>
+            <ul class="list">
+              <li>邮箱：<a href="mailto:hi@zhiwu.ai">hi@zhiwu.ai</a></li>
+              <li>微信/飞书：请邮件预约</li>
+              <li>媒体包：<a href="#" onclick="alert('即将上线');return false;">下载 Media Kit（即将上线）</a></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h2>订阅更新</h2>
+            <p class="muted">订阅月报与黑马/避坑榜。提交邮箱即默认同意隐私政策。</p>
+            <form onsubmit="event.preventDefault(); alert('感谢订阅！内测阶段将通过邮件邀请。'); this.reset();" style="display:flex; gap:8px; flex-wrap:wrap">
+              <input type="email" required placeholder="你的邮箱" style="flex:1; min-width:220px; padding:10px 12px; border-radius:10px; border:var(--border); background:var(--bg-elev); color:var(--text)" />
+              <button class="btn primary" type="submit">订阅</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="card">
+          <h2>常见问答（精选）</h2>
+          <div class="two-col">
+            <div>
+              <b>如何保证评测客观？</b>
+              <p class="muted">方法公开、数据可复现、版本可追溯；合作强制披露，且赞助不影响结论。</p>
+            </div>
+            <div>
+              <b>会不会「唱衰」某些品牌？</b>
+              <p class="muted">只谈事实与边界，不贴标签；同一品牌的好产品一样会被推荐。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <div style="display:flex;align-items:center;justify-content:space-between; gap:10px; flex-wrap:wrap">
+          <div>© 2025–2030 智物评测局 · 只说对你有用的真话</div>
+          <div class="muted">Made with ❤ · 主题可切换</div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Theme toggle with localStorage
+      (function() {
+        const root = document.documentElement;
+        const key = 'zhiwu-theme';
+        const saved = localStorage.getItem(key);
+        if (saved === 'light') root.setAttribute('data-theme', 'light');
+        const btn = document.getElementById('themeToggle');
+        btn.addEventListener('click', () => {
+          const isLight = root.getAttribute('data-theme') === 'light';
+          root.setAttribute('data-theme', isLight ? 'dark' : 'light');
+          localStorage.setItem(key, isLight ? 'dark' : 'light');
+        });
+      })();
+    </script>
+  </body>
+</html>
+
